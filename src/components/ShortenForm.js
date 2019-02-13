@@ -49,7 +49,8 @@ export default class extends Component {
     
     async handleSubmit(event) {
         const { url, selectedOption, customUrl } = this.state;
-        const namespace = JSON.parse(JSON.stringify(selectedOption))['value'];
+        console.log('selectedOption: ', selectedOption);
+        const namespace = selectedOption ? JSON.parse(JSON.stringify(selectedOption))['value'] : '';
         const withHttp = !/^https?:\/\//i.test(url) ? `http://${url}` : url;
         event.preventDefault();
         const response = await fetch('http://localhost:5000/shorten', {
@@ -83,7 +84,7 @@ export default class extends Component {
         
         return (
             <div>
-                <h1>AEXP Shortener</h1>
+                <h1>Custom Shortener</h1>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="url">Url:</label>
                     <input type="text" id="url" name="url" value={this.state.url} onChange={this.handleChange} />

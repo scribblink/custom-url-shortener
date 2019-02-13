@@ -1,19 +1,9 @@
 import { Router } from "express";
 import client from '../lib/redis';
-import validate from '../lib/validate';
+import { validate, urlExistsDeep } from '../lib/validate';
 const shortid = require('shortid');
 
 const router = Router();
-
-// function updateRedisWithCustomUrl(customUrl, url, namespace) {
-    
-//     console.log('***: ', id, nmsp)
-    
-// }
-
-function createCustomUrl(err) {
-
-}
 
 router.get('/namespaces', (req, res) => {
     let namespaceArray = []
@@ -27,11 +17,12 @@ router.get('/namespaces', (req, res) => {
     }); 
     
 })
-router.post('/shorten', (req, res) =>{
+
+router.post('/shorten', async (req, res) =>{
     const { url, namespace, customUrl } = req.body;
     const id = (customUrl === '') ? shortid.generate() : customUrl;
     const nmsp = namespace || 'global';
-    if (url && validate(url)) {
+    if (url && await validate(url)) {
         client.dbsize((err, count) => {
             if (!err) {
                 client.hsetnx(`namespace:${nmsp}`, id, url, (err, result) => {

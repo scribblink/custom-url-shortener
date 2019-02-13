@@ -12,6 +12,7 @@ const validate = async (url) => {
             return true;
         } else {
             console.log(`${url} does not exist`);
+            return false;
         }
     }
     return false;
@@ -62,4 +63,7 @@ const urlExistsDeep = (url, header = {}, method = 'HEAD', timeout = 5000, pool =
   });
 
 
-export default validate;
+module.exports = {
+  validate,
+  urlExistsDeep,
+}
