@@ -1,6 +1,6 @@
 import { Router } from "express";
 import client from '../lib/redis';
-import { validate, urlExistsDeep } from '../lib/validate';
+import { validate } from '../lib/validate';
 const shortid = require('shortid');
 
 const router = Router();
@@ -22,7 +22,9 @@ router.post('/shorten', async (req, res) =>{
     const { url, namespace, customUrl } = req.body;
     const id = (customUrl === '') ? shortid.generate() : customUrl;
     const nmsp = namespace || 'global';
+    console.log('shorten', url, namespace, customUrl);
     if (url && await validate(url)) {
+        
         client.dbsize((err, count) => {
             if (!err) {
                 client.hsetnx(`namespace:${nmsp}`, id, url, (err, result) => {
@@ -32,11 +34,11 @@ router.post('/shorten', async (req, res) =>{
                             : res.status(200).send({id, customUrl, nmsp});
                         
                     } else {
-                        res.status(500).send({message: err})
+                        res.status(500).send({message: `in setting hsetnx - ${err}`})
                     }
                 });
             } else {
-                res.status(500).send({message: err})
+                res.status(500).send({message: `in client.dbsize - ${err}`})
             }
         })
     } else {

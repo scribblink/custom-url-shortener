@@ -10,7 +10,8 @@ export default class extends Component {
             url: '',
             namespace: '',
             customUrl: '',
-            namespaces: []
+            namespaces: [],
+            shortenedUrl: ''
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -48,11 +49,11 @@ export default class extends Component {
     }
     
     async handleSubmit(event) {
+        event.preventDefault();
         const { url, selectedOption, customUrl } = this.state;
-        console.log('selectedOption: ', selectedOption);
         const namespace = selectedOption ? JSON.parse(JSON.stringify(selectedOption))['value'] : '';
         const withHttp = !/^https?:\/\//i.test(url) ? `http://${url}` : url;
-        event.preventDefault();
+        
         const response = await fetch('http://localhost:5000/shorten', {
             method: 'POST',
             headers: {
@@ -61,16 +62,22 @@ export default class extends Component {
             },
             body: JSON.stringify({url:withHttp, namespace, customUrl})
         })
-        const content = await response.json();
-        console.log('c: ', content)
-        if (content['message']) {
-            console.log('message', content['message'])
-        } else {
-            let urlPath = customUrl ? customUrl : content.id;
-            let fullUrl = (namespace === '') ? `${urlPath}` : `${namespace}/${urlPath}`;
-            console.log(`Your shortened Url is : http://localhost:3000/${fullUrl}`);
-        
+        try {
+            const content = await response.json();
+            if (content['message']) {
+                console.log('message', content['message'])
+            } else {
+                let urlPath = customUrl ? customUrl : content.id;
+                let fullUrl = (namespace === '') ? `${urlPath}` : `${namespace}/${urlPath}`;
+                this.setState({shortenedUrl: fullUrl})
+                console.log(`Your shortened Url is : http://localhost:3000/${fullUrl}`);
+            
+            }
+        } catch(e) {
+            console.log('error: ', e)
         }
+        
+        
         
     }
 
@@ -100,6 +107,9 @@ export default class extends Component {
 
                     <input type="submit" value="Submit" />
                 </form>
+                {
+                    this.state.shortenedUrl !== '' && <div><a href={`http://localhost:3000/${this.state.shortenedUrl}`} target="_blank" rel="noopener noreferrer">{`http://localhost:3000/${this.state.shortenedUrl}`}</a></div>
+                }
             </div>
         )
     }

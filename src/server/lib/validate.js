@@ -1,13 +1,18 @@
 import request from 'request';
+import config from "../config";
+
+const { urls } = config;
 
 const REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-const validUrls = ["aexp.com", "google.com"]
+const validUrls = urls;
 const validate = async (url) => {
     const isValidUrl = REGEX.test(url);
-    console.log('isValidUrl: ', isValidUrl)
+    
     if (isValidUrl) {
         const ued = await urlExistsDeep(url);
+        console.log('[validator]: ', await urlExistsDeep(url) )
         const validator = await ued;
+        
         if (validator && validUrls.some(value => url.indexOf(value) >= 0 )) {
             return true;
         } else {
@@ -64,6 +69,5 @@ const urlExistsDeep = (url, header = {}, method = 'HEAD', timeout = 5000, pool =
 
 
 module.exports = {
-  validate,
-  urlExistsDeep,
+  validate
 }
