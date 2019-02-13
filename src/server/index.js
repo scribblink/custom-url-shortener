@@ -4,9 +4,13 @@
 import http from 'http';
 const express = require('express');
 import { createTerminus } from '@godaddy/terminus';
+import fs from 'fs';
+import morgan from 'morgan';
+import path from 'path';
+
 const app = express();
 const port = process.env.PORT || 5000;
-const bodyParser = require('body-parser');
+import  bodyParser from 'body-parser';
 import api from './routes/api';
 import cors from 'cors';
 
@@ -18,6 +22,14 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cors())
+
+// create a write stream (in append mode)
+var serverLogStream = fs.createWriteStream(path.join(__dirname, 'server.log'), { flags: 'a' })
+
+// setup the logger
+app.use(morgan('combined', { stream: serverLogStream }))
+
+
 app.use("/", api.router);
 
 const server = http.createServer(app);
