@@ -108,7 +108,15 @@ export default class extends Component {
                     <input type="submit" value="Submit" />
                 </form>
                 {
-                    this.state.shortenedUrl !== '' && <div><a href={`http://localhost:3000/${this.state.shortenedUrl}`} target="_blank" rel="noopener noreferrer">{`http://localhost:3000/${this.state.shortenedUrl}`}</a></div>
+                    (this.state.shortenedUrl !== '') 
+                        && 
+                        <div>
+                            <a href={`http://localhost:3000/${this.state.shortenedUrl}`} 
+                                target="_blank" 
+                                rel="noopener noreferrer">
+                                {`http://localhost:3000/${this.state.shortenedUrl}`}
+                            </a>
+                        </div>
                 }
             </div>
         )
