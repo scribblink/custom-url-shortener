@@ -5,7 +5,7 @@ const shortid = require('shortid');
 
 const router = Router();
 
-router.get('/namespaces', (req, res) => {
+router.get('/v1/namespaces', (req, res) => {
     let namespaceArray = []
     client.keys('*', function (err, keys) {
         if (err) return console.log(err);
@@ -18,7 +18,7 @@ router.get('/namespaces', (req, res) => {
     
 })
 
-router.post('/shorten', async (req, res) =>{
+router.post('/v1/shorten', async (req, res) =>{
     const { url, namespace, customUrl } = req.body;
     const id = (customUrl === '') ? shortid.generate() : customUrl;
     const nmsp = namespace || 'global';
@@ -59,13 +59,13 @@ router.get('/:id', function(req, res) {
                 res.send();
             } else {
                 res.status(404)
-                    .send({message: "No url found for this id"})
+                    .send({message: "Url not found"})
                 
             }
         });
     } else {
-        return res.status(404)
-            .send({message: "No id provided"})
+        return res.status(400)
+            .send({message: "Invalid ID supplied"})
     }
     
 });
@@ -80,13 +80,13 @@ router.get('/:namespace/:id', function(req, res) {
                 res.send();
             } else {
                 res.status(404)
-                    .send({message: "No url found for this id"})
+                    .send({message: "Url not found"})
                 
             }
         });
     } else {
-        return res.status(404)
-            .send({message: "No id provided"})
+        return res.status(400)
+            .send({message: "Invalid ID supplied"})
     }
     
 });

@@ -28,7 +28,7 @@ export default class extends Component {
     }
 
     async componentDidMount() {
-        const response = await fetch('http://localhost:5000/namespaces', {
+        const response = await fetch('http://localhost:5000/v1/namespaces', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -54,7 +54,7 @@ export default class extends Component {
         const namespace = selectedOption ? JSON.parse(JSON.stringify(selectedOption))['value'] : '';
         const withHttp = !/^https?:\/\//i.test(url) ? `http://${url}` : url;
         
-        const response = await fetch('http://localhost:5000/shorten', {
+        const response = await fetch('http://localhost:5000/v1/shorten', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -111,7 +111,7 @@ export default class extends Component {
                     (this.state.shortenedUrl !== '') 
                         && 
                         <div>
-                            <a href={`http://localhost:3000/${this.state.shortenedUrl}`} 
+                            <a href={`http://localhost:3000/v1/${this.state.shortenedUrl}`} 
                                 target="_blank" 
                                 rel="noopener noreferrer">
                                 {`http://localhost:3000/${this.state.shortenedUrl}`}

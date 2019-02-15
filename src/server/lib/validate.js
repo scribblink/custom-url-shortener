@@ -10,7 +10,6 @@ const validate = async (url) => {
     
     if (isValidUrl) {
         const ued = await urlExistsDeep(url);
-        console.log('[validator]: ', await urlExistsDeep(url) )
         const validator = await ued;
         
         if (validator && validUrls.some(value => url.indexOf(value) >= 0 )) {
