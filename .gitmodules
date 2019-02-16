@@ -1,0 +1,6 @@
+[submodule "custom-url-shortener-frontend"]
+	path = custom-url-shortener-frontend
+	url = https://github.com/scribblink/custom-url-shortener-frontend.git
+[submodule "custom-url-shortener-backend"]
+	path = custom-url-shortener-backend
+	url = https://github.com/scribblink/custom-url-shortener-backend.git
