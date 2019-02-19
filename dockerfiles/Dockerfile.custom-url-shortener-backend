@@ -4,9 +4,7 @@ WORKDIR /usr/src/app
 
 # On hold while proxy issue is resolved.
 #COPY package*.json ./
-#RUN npm run nexus:unregistry \
-# && npm run nexus:registry \
-# && npm install
+#RUN yarn install
 
 COPY . .
 
