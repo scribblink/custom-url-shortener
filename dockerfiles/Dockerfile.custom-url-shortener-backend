@@ -1,4 +1,14 @@
 FROM node:6
 
+WORKDIR /usr/src/app
+
+# On hold while proxy issue is resolved.
+#COPY package*.json ./
+#RUN npm run nexus:unregistry \
+# && npm run nexus:registry \
+# && npm install
+
+COPY . .
+
 EXPOSE 5000
 CMD ["npm", "run", "start-server"]
