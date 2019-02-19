@@ -1,0 +1,4 @@
+FROM node:6
+
+EXPOSE 5000
+CMD ["npm", "run", "start-server"]
